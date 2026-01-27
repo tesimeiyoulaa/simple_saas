@@ -1,5 +1,5 @@
--- Note: auth.users table already has RLS enabled by default
--- We don't need to modify system tables
+-- Enable necessary extensions
+create extension if not exists "uuid-ossp";
 
 -- Create customers table to link Supabase users with Creem customers
 create table public.customers (
@@ -50,8 +50,6 @@ create index customers_user_id_idx on public.customers(user_id);
 create index customers_creem_customer_id_idx on public.customers(creem_customer_id);
 create index subscriptions_customer_id_idx on public.subscriptions(customer_id);
 create index subscriptions_status_idx on public.subscriptions(status);
-
--- Create indexes for credits_history
 create index credits_history_customer_id_idx on public.credits_history(customer_id);
 create index credits_history_created_at_idx on public.credits_history(created_at);
 
@@ -75,7 +73,83 @@ create trigger handle_subscriptions_updated_at
     for each row
     execute function public.handle_updated_at();
 
--- Create RLS policies
+-- Auto-create customer trigger
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  -- Insert into customers
+  INSERT INTO public.customers (
+    user_id,
+    email,
+    credits,
+    creem_customer_id,
+    created_at,
+    updated_at,
+    metadata
+  ) VALUES (
+    NEW.id,
+    NEW.email,
+    3, -- Default 3 credits for new users
+    'auto_' || NEW.id::text,
+    NOW(),
+    NOW(),
+    jsonb_build_object(
+      'source', 'auto_registration',
+      'initial_credits', 3,
+      'registration_date', NOW()
+    )
+  );
+
+  -- Insert into credits_history
+  INSERT INTO public.credits_history (
+    customer_id,
+    amount,
+    type,
+    description,
+    created_at,
+    metadata
+  ) VALUES (
+    (SELECT id FROM public.customers WHERE user_id = NEW.id),
+    3,
+    'add',
+    'Welcome bonus for new user registration',
+    NOW(),
+    jsonb_build_object(
+      'source', 'welcome_bonus',
+      'user_registration', true
+    )
+  );
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger for new user creation
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
+-- Trigger for user email update
+CREATE OR REPLACE FUNCTION public.handle_user_email_update()
+RETURNS trigger AS $$
+BEGIN
+    UPDATE public.customers
+    SET email = NEW.email, updated_at = NOW()
+    WHERE user_id = NEW.id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE TRIGGER on_auth_user_email_updated
+    AFTER UPDATE OF email ON auth.users
+    FOR EACH ROW EXECUTE PROCEDURE public.handle_user_email_update();
+
+
+-- RLS Policies
+alter table public.customers enable row level security;
+alter table public.subscriptions enable row level security;
+alter table public.credits_history enable row level security;
+
 -- Customers policies
 create policy "Users can view their own customer data"
     on public.customers for select
@@ -85,12 +159,10 @@ create policy "Users can update their own customer data"
     on public.customers for update
     using (auth.uid() = user_id);
 
--- Add policy for service role to insert/update customer data
 create policy "Service role can manage customer data"
     on public.customers for all
     using (auth.role() = 'service_role');
 
--- Subscriptions policies
 create policy "Users can view their own subscriptions"
     on public.subscriptions for select
     using (
@@ -101,7 +173,6 @@ create policy "Users can view their own subscriptions"
         )
     );
 
--- Add policy for service role to manage subscriptions
 create policy "Service role can manage subscriptions"
     on public.subscriptions for all
     using (auth.role() = 'service_role');
@@ -121,7 +192,7 @@ create policy "Service role can manage credits history"
     on public.credits_history for all
     using (auth.role() = 'service_role');
 
--- Ensure tables are accessible by service role
+-- Grants
 grant all on public.customers to service_role;
 grant all on public.subscriptions to service_role;
-grant all on public.credits_history to service_role; 
+grant all on public.credits_history to service_role;

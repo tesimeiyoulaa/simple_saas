@@ -3,12 +3,11 @@ import { redirect } from "next/navigation";
 import { SubscriptionStatusCard } from "@/components/dashboard/subscription-status-card";
 import { CreditsBalanceCard } from "@/components/dashboard/credits-balance-card";
 import { QuickActionsCard } from "@/components/dashboard/quick-actions-card";
-import { MyNamesCard } from "@/components/dashboard/my-names-card";
-import { GenerationHistoryCard } from "@/components/dashboard/generation-history-card";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
 
+  // 1. Check Auth User
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -17,7 +16,8 @@ export default async function DashboardPage() {
     return redirect("/sign-in");
   }
 
-  // Get customer data including credits and subscription
+  // 2. Fetch Customer Data (Credits, Subscription)
+  // We use a single query to get the customer profile + related subscription & credits history
   const { data: customerData } = await supabase
     .from("customers")
     .select(
@@ -47,45 +47,32 @@ export default async function DashboardPage() {
       {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border rounded-lg p-6 sm:p-8 mt-6 sm:mt-8">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2 break-words">
-          Welcome back,{" "}
-          <span className="block sm:inline mt-1 sm:mt-0">{user.email}</span>
+          Welcome back, {customerData?.name || user.email?.split("@")[0]}
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground">
-          Manage your Chinese names, view your generation history, and track your usage.
+        <p className="text-muted-foreground">
+          Manage your subscription, check your credits, and access your dashboard features.
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Credits Card */}
+        <CreditsBalanceCard credits={credits} recentHistory={recentCreditsHistory} />
+        
+        {/* Subscription Status */}
         <SubscriptionStatusCard subscription={subscription} />
-        <CreditsBalanceCard
-          credits={credits}
-          recentHistory={recentCreditsHistory}
-        />
+        
+        {/* Quick Actions */}
         <QuickActionsCard />
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <MyNamesCard />
-        <GenerationHistoryCard />
-      </div>
-
-      {/* Account Details Section */}
-      <div className="rounded-xl border bg-card p-4 sm:p-6 mb-6">
-        <h2 className="font-bold text-lg sm:text-xl mb-4">Account Details</h2>
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-            <div className="space-y-1">
-              <p className="text-muted-foreground">Email</p>
-              <p className="font-medium break-all">{user.email}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-muted-foreground">User ID</p>
-              <p className="font-medium break-all">{user.id}</p>
-            </div>
-          </div>
-        </div>
+      {/* Placeholder for New Business Logic */}
+      <div className="border border-dashed rounded-lg p-10 flex flex-col items-center justify-center text-center text-muted-foreground bg-muted/20">
+        <h3 className="text-lg font-semibold mb-2">My Projects</h3>
+        <p>You haven't created any projects yet. Start by creating your first one!</p>
+        <button className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium">
+          Create New Project
+        </button>
       </div>
     </div>
   );

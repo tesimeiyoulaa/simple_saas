@@ -21,11 +21,11 @@ export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith("/dashboard");
 
-  // Main navigation items for Chinese Name Generator
+  // Main navigation items for generic SaaS
   const mainNavItems: NavItem[] = [
     { label: "Home", href: "/" },
-    { label: "Popular Names", href: "/product/popular-names" },
-    { label: "About", href: "/product/about" },
+    { label: "Features", href: "/#features" },
+    { label: "Pricing", href: "/#pricing" },
   ];
 
   // Dashboard items - empty array as we don't want navigation items in dashboard
@@ -64,14 +64,9 @@ export default function Header({ user }: HeaderProps) {
                 </span>
               )}
               {!isDashboard && (
-                <>
-                  <Button asChild size="sm" variant="default">
-                    <Link href="/profile">Profile</Link>
-                  </Button>
-                  <Button asChild size="sm" variant="outline">
-                    <Link href="/dashboard">Dashboard</Link>
-                  </Button>
-                </>
+                <Button asChild size="sm" variant="outline">
+                  <Link href="/dashboard">Dashboard</Link>
+                </Button>
               )}
               <form action={signOutAction}>
                 <Button type="submit" variant="outline" size="sm">

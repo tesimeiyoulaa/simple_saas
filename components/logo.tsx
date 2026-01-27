@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { Rocket } from "lucide-react";
 
 export function Logo() {
   return (
@@ -7,17 +7,11 @@ export function Logo() {
       href="/"
       className="flex items-center gap-2 hover:opacity-90 transition-opacity"
     >
-      <div className="flex items-center justify-center">
-        <Image
-          src="/images/chinesename-logo.png"
-          alt="ChineseName.club Logo"
-          width={32}
-          height={32}
-          className="w-8 h-8"
-        />
+      <div className="flex items-center justify-center p-1 bg-primary/10 rounded-md">
+        <Rocket className="w-5 h-5 text-primary" />
       </div>
       <span className="font-bold text-lg bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-        ChineseName.club
+        Raphael Starter
       </span>
     </Link>
   );

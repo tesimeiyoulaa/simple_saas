@@ -21,7 +21,7 @@ export const SUBSCRIPTION_TIERS: ProductTier[] = [
   {
     name: "Business",
     id: "tier-pro",
-    productId: "prod_6rOJtTwlyjsH9AVuSzh8aR", // $29 monthly subscription (测试产品)
+    productId: "prod_6rOJtTwlyjsH9AVuSzh8aR", // $29 monthly subscription
     priceMonthly: "$29",
     description: "Ideal for growing businesses and development teams.",
     features: [
@@ -33,7 +33,7 @@ export const SUBSCRIPTION_TIERS: ProductTier[] = [
       "API usage dashboard",
     ],
     featured: true,
-    discountCode: "", // Optional discount code - 临时移除
+    discountCode: "", // Optional discount code
   },
   {
     name: "Enterprise",

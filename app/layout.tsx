@@ -12,19 +12,19 @@ const baseUrl = process.env.BASE_URL
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
-  title: "ChineseName.club - AI Chinese Name Generator",
-  description: "Discover your perfect Chinese name with our AI-powered generator. Get personalized names based on your personality, with cultural significance and detailed meanings.",
-  keywords: "Chinese name generator, AI name generator, Chinese names, cultural names, personalized names, Chinese identity",
+  title: "Raphael Starter Kit",
+  description: "The ultimate Next.js starter kit with Supabase Auth, Creem Payments, and a production-ready dashboard.",
+  keywords: "Next.js starter kit, SaaS boilerplate, Supabase, Creem payments, TypeScript",
   openGraph: {
-    title: "ChineseName.club - AI Chinese Name Generator",
-    description: "Discover your perfect Chinese name with our AI-powered generator. Get personalized names based on your personality, with cultural significance and detailed meanings.",
+    title: "Raphael Starter Kit",
+    description: "The ultimate Next.js starter kit with Supabase Auth, Creem Payments, and a production-ready dashboard.",
     type: "website",
     url: baseUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "ChineseName.club - AI Chinese Name Generator",
-    description: "Discover your perfect Chinese name with our AI-powered generator.",
+    title: "Raphael Starter Kit",
+    description: "The ultimate Next.js starter kit with Supabase Auth, Creem Payments, and a production-ready dashboard.",
   },
 };
 
