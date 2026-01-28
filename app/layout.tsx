@@ -6,23 +6,23 @@ import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 const baseUrl = process.env.BASE_URL
-  ? `https://${process.env.BASE_URL}`
+  ? `${process.env.BASE_URL}`
   : "http://localhost:3000";
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
-  title: "Raphael Starter Kit",
+  title: "Simple Saas Starter Kit",
   description: "The ultimate Next.js starter kit with Supabase Auth, Creem Payments, and a production-ready dashboard.",
   keywords: "Next.js starter kit, SaaS boilerplate, Supabase, Creem payments, TypeScript",
   openGraph: {
-    title: "Raphael Starter Kit",
+    title: "Simple Saas Starter Kit",
     description: "The ultimate Next.js starter kit with Supabase Auth, Creem Payments, and a production-ready dashboard.",
     type: "website",
     url: baseUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raphael Starter Kit",
+    title: "Simple Saas Starter Kit",
     description: "The ultimate Next.js starter kit with Supabase Auth, Creem Payments, and a production-ready dashboard.",
   },
 };

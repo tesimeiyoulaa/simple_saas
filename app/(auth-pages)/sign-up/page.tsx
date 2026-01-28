@@ -17,7 +17,7 @@ export default async function SignUp(props: {
   const signUpWithGoogle = async () => {
     "use server";
     const supabase = await createClient();
-    const origin = process.env.NEXT_PUBLIC_SITE_URL;
+    const origin = process.env.BASE_URL;
 
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",

@@ -1,74 +1,28 @@
-# Raphael Starter Kit
+# Simple Saas Starter Kit
 
-这是一个面向编程小白的现代化启动套件，基于 Next.js、Supabase 和 Creem.io 构建。专为帮助开发者快速搭建支持全球用户登录和支付的网站，特别对中国大陆开发者友好。
+这是基于raphael-starterkit-v1做了进一步简化重构，
+面向编程小白的saas化启动套件，专为帮助开发者快速搭建支持全球用户登录和支付的网站
+基于 Next.js、Supabase 和 Creem.io 构建。
+别对中国大陆开发者友好。
 
 ## 🌟 简介
 
-这是一个基于 Next.js、Supabase 和 Creem.io 构建的现代化、生产就绪的启动套件。非常适合快速构建具有身份验证、订阅和积分系统的 SaaS 应用程序，让您的 MVP 开发速度提升10倍。
+基于 Next.js、Supabase 和 Creem.io 生产就绪的启动套件
+快速构建具有身份验证、订阅和积分系统的 SaaS 应用程序，
+开发速度提升10倍
 
 ## 核心特色功能
 
-- 💯 **精美的用户界面**
-  - 经过精心设计的现代化界面
-  - 优雅的响应式设计，在各种设备上呈现完美体验
-  - 平滑的动画和过渡效果
-  - 精心优化的布局和组件排列
-  - 专业的色彩方案和排版
-
-- 🚀 **Next.js App Router**
-  - 使用最新的 Next.js 功能
-  - 服务器组件和客户端组件的最佳组合
-  - 内置的路由保护
-  - 快速的页面加载和导航体验
-
 - 🔐 **全面的身份验证系统**
-  - 基于 Supabase
-  - 电子邮件/密码认证
-  - OAuth 提供商支持 (Google, GitHub等)
-  - 安全的会话管理
-  - 使用中间件保护路由
-  
+  - 基于Supabase
+  - 电子邮件登录支持
+  - Google 登录支持
+
 - 💳 **完整的支付与订阅系统**
-  - 与 Creem.io 完美集成，支持全球信用卡收款 
-  - 特别适合中国大陆用户作为商家使用
-  - 多级订阅方案
-  - 灵活的积分系统
-  - 详细的使用量跟踪
+  - 与Creem.io集成，支持全球信用卡收款，支持支付宝
 
-- 🇨🇳 **AI中文名字生成器**
-  - 基于OpenAI/OpenRouter的智能名字生成
-  - 个性化分析和文化匹配
-  - 免费试用和付费增强功能
-  - 完整的字符解释和文化背景
-  - 流行名字展示和收藏功能
+- 📱 **响应式设计**
 
-- 🛠️ **开发者友好**
-  - TypeScript 类型安全
-  - 清晰的项目结构
-  - 完善的文档
-  - Cursor编辑器友好框架
-
-## 📱 响应式设计
-
-Raphael Starter Kit 采用了全面的响应式设计，确保您的应用在任何设备上都能完美呈现：
-
-- 手机端优化的导航和布局
-- 平板电脑友好的交互设计
-- 桌面端的高效工作流
-- 精确的组件间距和对齐
-
-## 🎨 UI 组件库
-
-我们的启动套件包含了丰富的预构建组件，帮助您快速组装精美的界面：
-
-- 现代化的导航栏和页脚
-- 引人注目的英雄区域
-- 特色功能展示组件
-- 专业的徽标云展示
-- 灵活的FAQ手风琴组件
-- 精美的定价卡片
-- 引人注目的行动号召按钮
-- 引导用户的清晰路径
 
 ## 快速开始
 
@@ -81,8 +35,8 @@ Raphael Starter Kit 采用了全面的响应式设计，确保您的应用在任
 ### 步骤 1: 克隆仓库
 
 ```bash
-git clone https://github.com/yourusername/raphael-starter-kit.git
-cd raphael-starter-kit
+git clone https://github.com/fishfl/simple_saas.git
+cd simple_saas
 ```
 
 ### 步骤 2: 安装依赖
@@ -97,48 +51,42 @@ npm i
    - 点击"新建项目"
    - 填写基本信息（项目名称、密码等）
 
-2. 前往 项目设置 > API 获取项目凭证
-   - 从项目设置页面复制凭证信息
-   - 将凭证粘贴到.env文件中
+2. 前往 项目设置 > Data API
+   - 复制URL, 粘贴到.env文件中NEXT_PUBLIC_SUPABASE_URL
+   同样，项目设置 > API Keys > Legacy anon, service_role API keys
+   - NEXT_PUBLIC_SUPABASE_ANON_KEY=你的匿名密钥anon public
+   - SUPABASE_SERVICE_ROLE_KEY=你的服务角色密钥service_role secret
 
-3. 配置登录认证
-   - 选择【Auth】>【Providers】
-   - 选择email认证
-   - 关闭"Confirm email"选项并保存设置
+3. 配置登录方式
+   - 选择【Authentication】>【Sign In / Providers】
+   - 开启email认证
 
-4. (可选) 设置Google登录
+
+4. (可选，国外用户需要用google登录) 设置Google登录
    - 进入[Google 开发者控制台](https://console.cloud.google.com)，创建新项目
    - 配置项目权限
    - 前往【API与服务】>【凭据】
-   - 创建OAuth客户端ID
+   - 创建OAuth客户端ID（可能要先创建品牌塑造）
    - 添加授权来源URL和重定向URI
    - 重定向URI格式: `https://<项目ID>.supabase.co/auth/v1/callback`
+     （注意是id不是name，在Supabase项目设置页面复制）
    - 复制OAuth客户端ID和密钥
 
-5. 在Supabase配置Google认证
-   - 打开Auth > Providers > Google
-   - 填写从Google开发者控制台获取的客户端ID和密钥
+   在Supabase配置Google认证
+   - 选择【Authentication】>【Sign In / Providers】
    - 启用Google认证
+   - 填写从Google开发者控制台获取的客户端ID和密钥
 
-6. 设置定向URL
-   - 将定向URL更改为您的线上地址
-   - 确保URL与Google开发者控制台中的地址完全一致
-
-7. 设置环境变量
+5. 设置环境变量
    ```bash
    cp .env.example .env.local
    ```
    
-   在`.env.local`中更新Supabase变量:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=你的项目URL
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=你的匿名密钥
-   SUPABASE_SERVICE_ROLE_KEY=你的服务角色密钥
-   ```
-
-8. 创建数据库表结构
+6. 创建数据库表结构
+   - 打开supabase/migrations/20250101000000_init_schema.sql
    - 复制SQL代码到Supabase SQL编辑器
-   - 执行SQL创建必要的表结构
+   - 执行SQL创建表结构
+
 
 ### 步骤 4: 设置 Creem.io
 
@@ -146,13 +94,13 @@ npm i
 2. 初始设置
    - 打开测试模式
    - 导航到顶部导航栏中的"开发者"部分
-   - 复制API Key并粘贴到.env文件中
+   - 复制API Key并粘贴到.env文件中CREEM_API_KEY
 
 3. 创建Webhooks
    - 前往开发者 > Webhooks
    - 创建新的Webhook
    - 填写URL: `https://你的域名/api/webhooks/creem`
-   - 复制Webhook密钥并粘贴到.env文件中
+   - 复制Webhook密钥并粘贴到.env文件中CREEM_WEBHOOK_SECRET
 
 4. 更新环境变量
    ```
@@ -176,7 +124,7 @@ npm i
    CREEM_API_URL=https://test-api.creem.io/v1
 
    # 站点URL配置
-   NEXT_PUBLIC_SITE_URL=http://你的线上地址
+   BASE_URL=你的线上地址
    
    # 支付成功后的重定向URL
    CREEM_SUCCESS_URL=http://你的线上地址/dashboard
